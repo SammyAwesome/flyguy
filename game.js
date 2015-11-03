@@ -157,6 +157,9 @@ function processKEY(key){
 
 function onTouchStart(x, y , id){
 	if(editmode == true){
+		if(selectedBlock > 6){
+			return;
+		}
 		if(selectedBlock == 6){
 			spawnFly.x = x;
 			spawnFly.y = y;
