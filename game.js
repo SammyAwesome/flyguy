@@ -5,7 +5,11 @@
 // TODO: DECLARE and INTIALIZE your constants here
 
 var finger  = loadImage("http://www.psdgraphics.com/file/hand-pointer-icon.jpg")
-
+var HOME = 1
+var PLAY = 2
+var EDIT = 3
+var pixellily = loadImage("pixellilypad.png")
+var pixelfly = loadImage("pixelfly.png")
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                     MUTABLE STATE    
@@ -15,7 +19,7 @@ var finger  = loadImage("http://www.psdgraphics.com/file/hand-pointer-icon.jpg")
 // TODO: DECLARE your variables here
 var lastKeyCode;
 var xx;
-var editmode;
+var mode;
 var yy;
 var moving;
 var speed;
@@ -25,7 +29,8 @@ var fx;
 var fy;
 var currentKEY;
 var flymoving;
-var flystate
+var flystate;
+
 //var FunY;
 //var FunX;
 var SCORE;
@@ -49,7 +54,7 @@ function onSetup() {
 	xx = 200;
 	
 	yy = 200;
-	editmode = false;
+	mode = HOME;
 	moving = 0;
 	speed = 20;
 	bugMove = 0;
@@ -80,11 +85,17 @@ function onKeyStart(key) {
 	currentKEY = key;
 	
     lastKeyCode = key;
+	if(key == 32 && mode == PLAY || key == 32 && mode == EDIT){
+		mode = HOME
+	} else if(key == 32 && mode == HOME){
+		mode = EDIT
+	}
 	if(key == 27){
-		if(editmode == true){
-			editmode = false
-		}else			{
-			editmode = true
+		if(mode == EDIT){
+			mode = PLAY
+		}else if (mode == PLAY)	{
+			mode = EDIT
+			
 		}
 	}
 	if(key > 48 && key < 59){
@@ -156,7 +167,7 @@ function processKEY(key){
 }
 
 function onTouchStart(x, y , id){
-	if(editmode == true){
+	if(mode == EDIT){
 		if(selectedBlock > 6){
 			return;
 		}
@@ -168,7 +179,7 @@ function onTouchStart(x, y , id){
 		
 		}*/ else {
 			
-			insertBack(lilypads, {x:x, y:y, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
+			insertBack(lilypads, {x:round(x/100) * 100, y:round(y/100) * 100, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
 		}
 	}
 }
@@ -179,19 +190,33 @@ function onTouchMove(x, y, id){
 
 function nocollision(lily, newx, newy){
 	if (lily.solid){
-		return newy > lily.y + 100  || newy < lily.y - 100 || newx > lily.x + 100 || newx < lily.x - 100
+		return newy > lily.y + 75  || newy < lily.y - 75 || newx > lily.x + 75 || newx < lily.x - 75
 		
 	}else{
 		return true
 	}
 }
 function epicLilyPads(lily){
-	fillCircle(lily.x, lily.y, 50, lily.color)
-	fillPolygon([lily.x - 10, lily.y - 50, lily.x + 10, lily.y - 50, lily.x, lily.y], bgColor)
+//	fillCircle(lily.x, lily.y, 50, lily.color)
+//	fillPolygon([lily.x - 10, lily.y - 50, lily.x + 10, lily.y - 50, lily.x, lily.y], bgColor)
+	drawImage(pixellily, lily.x -50, lily.y - 50, 100, 100)
+	
 }
 function bugDude(bugX, bugY) {
+	var angle;
+	if(flystate == 1){
+		angle = 1.5
+	}else if(flystate == 2){
+		angle = .5
+	}else if(flystate == 3){
+		angle = 1
+	}else if(angle == 4){
+		angle = 0
+	}
+	drawTransformedImage(pixelfly, bugX, bugY, angle * 3.14159, .25, .25)
 	
-	if(flystate == 1 && editmode == false){
+/*	
+	if(flystate == 1 && mode == PLAY){
 	//body
 		fillCircle(bugX, bugY, 38, makeColor(0, 0, 0))
 		fillCircle(bugX - 40, bugY, 30, makeColor(0, 0, 0))
@@ -207,9 +232,10 @@ function bugDude(bugX, bugY) {
 		fillCircle(bugX + 5, bugY + 15, 20, makeColor(.6, .8, .8))
 		fillCircle(bugX + 15, bugY - 20, 20, makeColor(.6, .8, .8))
 		fillCircle(bugX + 15, bugY + 20, 20, makeColor(.6, .8, .8))
+		
 	}
 	
-	if(flystate == 2 && editmode == false){
+	if(flystate == 2 && mode == PLAY){
 		fillCircle(bugX, bugY, 38, makeColor(0, 0, 0))
 		fillCircle(bugX + 40, bugY, 30, makeColor(0, 0, 0))
 	//eyes
@@ -225,7 +251,7 @@ function bugDude(bugX, bugY) {
 		fillCircle(bugX - 15, bugY - 20, 20, makeColor(.6, .8, .8))
 		fillCircle(bugX - 15, bugY + 20, 20, makeColor(.6, .8, .8))
 	}
-	if(flystate == 3 && editmode == false){
+	if(flystate == 3 && mode == PLAY){
 		
 		//body
 			fillCircle(bugX, bugY, 38, makeColor(0, 0, 0))
@@ -244,7 +270,7 @@ function bugDude(bugX, bugY) {
 			fillCircle(bugX + 20, bugY - 15, 20, makeColor(.6, .8, .8))
 		
 	}
-	if(flystate == 4 && editmode == false){
+	if(flystate == 4 && mode == PLAY){
 		
 		//body
 			fillCircle(bugX, bugY, 38, makeColor(0, 0, 0))
@@ -263,6 +289,7 @@ function bugDude(bugX, bugY) {
 			fillCircle(bugX + 20, bugY + 15, 20, makeColor(.6, .8, .8))
 		
 	}
+	*/
 	//hat
 	//FOR CHEF:
 //	fillCircle(bugX - 47, bugY - 90, 35, makeColor(1, 1, 1))
@@ -296,7 +323,7 @@ function frogMove(x, y) {
  }
 // Called 30 times or more per second
 function editMode() {
-	if(editmode == true){
+	if(mode == EDIT){
 		bgColor = makeColor(.2, .2, .2)
 		fx = spawnFly.x
 		fy = spawnFly.y
@@ -306,7 +333,8 @@ function editMode() {
 	}
 	
 }
-function onTick() {
+function gameTick() {
+	
 	/*if(fy < 0){
 		LOSE = 1
 	}
@@ -319,11 +347,8 @@ function onTick() {
 	if(fx > screenWidth){
 		LOSE = 1
 	}*/
-	processKEY(currentKEY)
 	editMode()
     // Some sample drawing 
-	clearRectangle(0, 0, screenWidth, screenHeight);
-	fillRectangle(0, 0, screenWidth, screenHeight, bgColor);
 	
 	
 	for(var i = 0; i < lilypads.length; i += 1) {
@@ -354,7 +379,7 @@ function onTick() {
 	}
 
   
-			if(editmode == true){
+			if(mode == EDIT){
 				bugY = 1190
 				bugX = 1175
 				x = 1325
@@ -419,7 +444,7 @@ function onTick() {
 			fillRectangle(1700, 1100, 150, 150, makeColor(1, 1, 1), 30)
 				strokeLine(1720, 1120, 1830, 1230, makeColor(1, 0, 0), 15)
 				strokeLine(1720, 1230, 1830, 1120, makeColor(1, 0, 0), 15)
-					fillText(names[selectedBlock - 1], screenWidth / 2, 1000, makeColor(.8, .8, .8), "100px sans-serif", "center", "middle")
+					fillText(names[selectedBlock - 1], screenWidth / 2, 1000, makeColor(.8, .8, .8), "100px Arial", "center", "middle")
 				
 		}
 /*	if(LOSE == 1){
@@ -437,6 +462,47 @@ function onTick() {
 		}*/
 		
 }
+function homeTick(){
+	bugX = screenWidth / 2
+	bugY = screenHeight / 2 + 200
+	bgColor = makeColor(0, 0, .4)
+
+		//body
+		fillCircle(bugX, bugY, 380, makeColor(0, 0, 0))
+		fillCircle(bugX, bugY - 400, 300, makeColor(0, 0, 0))
+	//eyes
+		fillCircle(bugX + 150, bugY - 500, 100, makeColor(.5, 0, 0))
+		fillCircle(bugX - 150, bugY - 500, 100, makeColor(.5, 0, 0))
+	//wings
+		fillCircle(bugX - 50, bugY - 150, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX + 50, bugY - 150, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX - 100, bugY - 50, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX + 100, bugY - 50, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX - 150, bugY + 50, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX + 150, bugY + 50, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX - 200, bugY + 150, 200, makeColor(.6, .8, .8))
+		fillCircle(bugX + 200, bugY + 150, 200, makeColor(.6, .8, .8))
+		
+	
+	
+	fillText("FLY GUY", screenWidth / 2, screenHeight / 2 - 200, makeColor(1, 1, 1, 1.0), "bold 400px Comic Sans MS",  "center", "middle");
+	fillText("SPACE TO BEGIN", screenWidth / 2, screenHeight / 2 + 100, makeColor(1, 1, 1, 1.0), "100px Comic Sans MS",  "center", "middle");
+
+
+	
+}
+function onTick(){
+	processKEY(currentKEY)
+	clearRectangle(0, 0, screenWidth, screenHeight);
+	fillRectangle(0, 0, screenWidth, screenHeight, bgColor);
+	
+	if (mode == HOME) {
+		homeTick ();
+	} else {
+		gameTick();		
+	}
+}
+
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                      HELPER RULES                         //
