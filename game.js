@@ -464,26 +464,12 @@ function gameTick() {
 }
 function homeTick(){
 	bugX = screenWidth / 2
-	bugY = screenHeight / 2 + 200
+	bugY = screenHeight / 2
 	bgColor = makeColor(0, 0, .4)
 
-		//body
-		fillCircle(bugX, bugY, 380, makeColor(0, 0, 0))
-		fillCircle(bugX, bugY - 400, 300, makeColor(0, 0, 0))
-	//eyes
-		fillCircle(bugX + 150, bugY - 500, 100, makeColor(.5, 0, 0))
-		fillCircle(bugX - 150, bugY - 500, 100, makeColor(.5, 0, 0))
-	//wings
-		fillCircle(bugX - 50, bugY - 150, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX + 50, bugY - 150, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX - 100, bugY - 50, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX + 100, bugY - 50, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX - 150, bugY + 50, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX + 150, bugY + 50, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX - 200, bugY + 150, 200, makeColor(.6, .8, .8))
-		fillCircle(bugX + 200, bugY + 150, 200, makeColor(.6, .8, .8))
-		
 	
+	
+	drawTransformedImage(pixelfly, bugX, bugY, 0, 3, 3)
 	
 	fillText("FLY GUY", screenWidth / 2, screenHeight / 2 - 200, makeColor(1, 1, 1, 1.0), "bold 400px Comic Sans MS",  "center", "middle");
 	fillText("SPACE TO BEGIN", screenWidth / 2, screenHeight / 2 + 100, makeColor(1, 1, 1, 1.0), "100px Comic Sans MS",  "center", "middle");
