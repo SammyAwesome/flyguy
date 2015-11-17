@@ -156,7 +156,6 @@ function processKEY(key){
 				collidedwith = lp;
 			}
 		}
-		console.log(collidedwith)
 		if(collidedwith == undefined){
 			fx = newx;
 			fy = newy;
