@@ -12,6 +12,7 @@ var pixellily = loadImage("pixellilypad.png")
 var pixelfly = loadImage("pixelfly.png")
 var pixelfrog = loadImage("pixelfrog.png")
 var pixelselected = loadImage("pixelselected.png")
+var pixelfirelily = loadImage("firelily.png")
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                     MUTABLE STATE    
@@ -169,7 +170,7 @@ function processKEY(key){
 }
 
 function onTouchStart(x, y , id){
-	drawImage(pixelselected, x, y, 52, 64)
+//	drawImage(pixelselected, x- 25, y, 52, 64)
 	if(mode == EDIT){
 		if(selectedBlock > 6){
 			return;
@@ -181,10 +182,20 @@ function onTouchStart(x, y , id){
 				insertBack(lilypads, {x:x, y:y, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
 		
 		}*/ else {
-			
-			insertBack(lilypads, {x:round(x/100) * 100, y:round(y/100) * 100, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
+			var newX = round(x/100) * 100;
+			var newY = round(y/100) * 100;
+			if(!lilyat(newX, newY)){
+				insertBack(lilypads, {x:newX, y:newY, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
+			}
 		}
 	}
+}
+function lilyat(x, y){
+	for(i = 0; i < lilypads.length; i++){
+		if(x == lilypads[i].x && y == lilypads[i].y){
+			return true
+		}
+	} return false
 }
 function onTouchMove(x, y, id){ 
 	onTouchStart(x, y, id);
@@ -202,8 +213,11 @@ function nocollision(lily, newx, newy){
 function epicLilyPads(lily){
 //	fillCircle(lily.x, lily.y, 50, lily.color)
 //	fillPolygon([lily.x - 10, lily.y - 50, lily.x + 10, lily.y - 50, lily.x, lily.y], bgColor)
-	drawImage(pixellily, lily.x -50, lily.y - 50, 100, 100)
-	
+	if(lily.fire){
+		drawImage(pixelfirelily, lily.x -50, lily.y -50, 100, 100)
+	}else if(!lily.fire){
+		drawImage(pixellily, lily.x -50, lily.y - 50, 100, 100)	
+	}
 }
 
 function bugDude(bugX, bugY) {
@@ -327,6 +341,7 @@ function frogMove(x, y) {
  }
 // Called 30 times or more per second
 function editMode() {
+	
 	if(mode == EDIT){
 		bgColor = makeColor(.2, .2, .2)
 		fx = spawnFly.x
@@ -384,6 +399,8 @@ function gameTick() {
 
   
 			if(mode == EDIT){
+				fillText("lilypad count:" + lilypads.length, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
+				
 				bugY = 1190
 				bugX = 1175
 				x = 1325
@@ -391,12 +408,10 @@ function gameTick() {
 				fillCircle(spawnFly.x, spawnFly.y, 20, makeColor(1, 1, 1))
 				strokeRectangle((2 * selectedBlock - 1) * 100, 1100, 150, 150, makeColor(.6, .6, .6), 25, 30)
 			fillRectangle(100, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillCircle(175, 1175, 50, makeColor(0, .6, 0))
-				fillPolygon([165, 1125, 185, 1125, 175, 1175], makeColor(1, 1, 1))
+				drawImage(pixellily, 125, 1125, 100, 100)
 			fillRectangle(300, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillCircle(375, 1175, 50, makeColor(.9, .5, 0)) 
+				drawImage(pixelfirelily, 325, 1125, 100, 100)
 				//fire lily
-				fillPolygon([365, 1125, 385, 1125, 375, 1175], makeColor(1, 1, 1))
 			fillRectangle(500, 1100, 150, 150, makeColor(1, 1, 1), 30)
 				fillCircle(575, 1175, 50, makeColor( .7, 0, .7))
 				// moving lily
@@ -468,10 +483,11 @@ function homeTick(){
 	
 }
 function onTick(){
+	
 	processKEY(currentKEY)
 	clearRectangle(0, 0, screenWidth, screenHeight);
 	fillRectangle(0, 0, screenWidth, screenHeight, bgColor);
-	
+
 	if (mode == HOME) {
 		homeTick ();
 	} else {
