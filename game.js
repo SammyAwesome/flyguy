@@ -10,6 +10,8 @@ var PLAY = 2
 var EDIT = 3
 var pixellily = loadImage("pixellilypad.png")
 var pixelfly = loadImage("pixelfly.png")
+var pixelfrog = loadImage("pixelfrog.png")
+var pixelselected = loadImage("pixelselected.png")
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                     MUTABLE STATE    
@@ -167,6 +169,7 @@ function processKEY(key){
 }
 
 function onTouchStart(x, y , id){
+	drawImage(pixelselected, x, y, 52, 64)
 	if(mode == EDIT){
 		if(selectedBlock > 6){
 			return;
@@ -202,6 +205,7 @@ function epicLilyPads(lily){
 	drawImage(pixellily, lily.x -50, lily.y - 50, 100, 100)
 	
 }
+
 function bugDude(bugX, bugY) {
 	var angle;
 	if(flystate == 1){
@@ -408,25 +412,10 @@ function gameTick() {
 				fillPolygon([965, 1125, 985, 1125, 975, 1175], makeColor(1, 1, 1))
 			fillRectangle(1100, 1100, 150, 150, makeColor(1, 1, 1), 30)
 			
-			//body
-				fillCircle(bugX, bugY, 38, makeColor(0, 0, 0))
-				fillCircle(bugX, bugY - 40, 30, makeColor(0, 0, 0))
-			//eyes
-				fillCircle(bugX + 15, bugY - 50, 10, makeColor(.5, 0, 0))
-				fillCircle(bugX - 15, bugY - 50, 10, makeColor(.5, 0, 0))
-			//wings
-				fillCircle(bugX - 5, bugY - 15, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX + 5, bugY - 15, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX - 10, bugY - 5, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX + 10, bugY - 5, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX - 15, bugY + 5, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX + 15, bugY + 5, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX - 20, bugY + 15, 20, makeColor(.6, .8, .8))
-				fillCircle(bugX + 20, bugY + 15, 20, makeColor(.6, .8, .8))
-				
+					drawImage(pixelfly, bugX - 50, bugY - 60, 100, 100)
 				
 			fillRectangle(1300, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillRectangle(x, y, 100, 100, makeColor(0, .4, 0), 30);
+			/*	fillRectangle(x, y, 100, 100, makeColor(0, .4, 0), 30);
 
 					fillCircle(x + 28, y - 4, 15, makeColor(0, .4, 0));
 					fillCircle(x + 72, y  - 4, 15, makeColor(0, .4, 0));
@@ -438,7 +427,8 @@ function gameTick() {
 					fillCircle(x + 28, y - 4, 2, makeColor(0, 0, 0));
 					fillCircle(x + 50, y + 60, 30, makeColor(0, 0, 0));
 					fillRectangle(x + 20, y + 30, 60, 27, makeColor(0, .4, 0));
-					
+			*/
+					drawImage(pixelfrog, x, y, 100, 100)
 			fillRectangle(1500, 1100, 150, 150, makeColor(1, 1, 1), 30)
 				drawImage(finger, 1520, 1120, 100, 120)
 			fillRectangle(1700, 1100, 150, 150, makeColor(1, 1, 1), 30)
