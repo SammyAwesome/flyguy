@@ -94,10 +94,12 @@ function onKeyStart(key) {
 	
     lastKeyCode = key;
 	if(key == 67){
-		localStorage = JSON.stringify(lilypads)
+		localStorage.lilypads = JSON.stringify(lilypads)
+		console.log(localStorage.lilypads)
 	}
 	if(key == 86){
-		lilypads = JSON.parse(localStorage)
+		console.log(localStorage.lilypads)
+		lilypads = JSON.parse(localStorage.lilypads)
 	}
 	if(key == 32 && mode == PLAY || key == 32 && mode == EDIT){
 		mode = HOME
