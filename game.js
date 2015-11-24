@@ -13,6 +13,10 @@ var pixelfly = loadImage("pixelfly.png")
 var pixelfrog = loadImage("pixelfrog.png")
 var pixelselected = loadImage("pixelselected.png")
 var pixelfirelily = loadImage("firelily.png")
+var pixelwater = loadImage("pixelwater.png")
+var watermovex = 4;
+var watermovey = 1;
+
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                     MUTABLE STATE    
@@ -44,6 +48,7 @@ var lilypads;
 var names;
 var colors;
 var spawnFly;
+var waves;
 
 
 ///////////////////////////////////////////////////////////////
@@ -55,7 +60,7 @@ function onSetup() {
 	
 	spawnFly = {x:200, y:200}
 	xx = 200;
-	
+	waves = [{x:100, y:100},{x:200, y:200}]
 	yy = 200;
 	mode = HOME;
 	moving = 0;
@@ -88,6 +93,12 @@ function onKeyStart(key) {
 	currentKEY = key;
 	
     lastKeyCode = key;
+	if(key == 67){
+		localStorage = JSON.stringify(lilypads)
+	}
+	if(key == 86){
+		lilypads = JSON.parse(localStorage)
+	}
 	if(key == 32 && mode == PLAY || key == 32 && mode == EDIT){
 		mode = HOME
 	} else if(key == 32 && mode == HOME){
@@ -156,6 +167,7 @@ function processKEY(key){
 				collidedwith = lp;
 			}
 		}
+		console.log(collidedwith)
 		if(collidedwith == undefined){
 			fx = newx;
 			fy = newy;
@@ -347,11 +359,18 @@ function editMode() {
 		fy = spawnFly.y
 		flystate = 1
 	}else{
-		bgColor = makeColor(0, 0, .8)
+		bgColor = makeColor(0, 0, .4)
 	}
 	
 }
 function gameTick() {
+	if(mode == PLAY){
+		for(i = 0; i < waves.length; i++){
+			drawImage(pixelwater, waves[i].x, waves[i].y, 120, 30)
+			waves[i].x = waves[i].x + watermovex
+			waves[i].y = waves[i].y + watermovey
+		}
+	}
 	
 	/*if(fy < 0){
 		LOSE = 1
@@ -467,6 +486,7 @@ function gameTick() {
 		
 }
 function homeTick(){
+	
 	bugX = screenWidth / 2
 	bugY = screenHeight / 2
 	bgColor = makeColor(0, 0, .4)
@@ -477,12 +497,12 @@ function homeTick(){
 	
 	fillText("FLY GUY", screenWidth / 2, screenHeight / 2 - 200, makeColor(1, 1, 1, 1.0), "bold 400px Comic Sans MS",  "center", "middle");
 	fillText("SPACE TO BEGIN", screenWidth / 2, screenHeight / 2 + 100, makeColor(1, 1, 1, 1.0), "100px Comic Sans MS",  "center", "middle");
+	
 
 
 	
 }
 function onTick(){
-	
 	processKEY(currentKEY)
 	clearRectangle(0, 0, screenWidth, screenHeight);
 	fillRectangle(0, 0, screenWidth, screenHeight, bgColor);
