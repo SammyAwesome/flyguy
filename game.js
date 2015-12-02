@@ -16,7 +16,9 @@ var pixelfirelily = loadImage("firelily.png")
 var pixelwater = loadImage("pixelwater.png")
 var watermovex = 4;
 var watermovey = 1;
-
+var pixelmovinglily = loadImage("MOBILELILY.png")
+var pixeltplily = loadImage("pixeltplily.png")
+var pixelghostlily = loadImage("ghost.png")
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //                     MUTABLE STATE    
@@ -184,11 +186,20 @@ function processKEY(key){
 
 function onTouchStart(x, y , id){
 //	drawImage(pixelselected, x- 25, y, 52, 64)
+
 	if(mode == EDIT){
-		if(selectedBlock > 6){
-			return;
+		if(selectedBlock == 9){
+			for(i = 0; i < lilypads.length; i++){
+				if(round(x/100) * 100 == lilypads[i].x && round(y/100) * 100 == lilypads[i].y){
+					removeAt(lilypads, i)
+				
+				}
+			}
+			
 		}
-		if(selectedBlock == 6){
+		if(selectedBlock > 6){
+			return
+		}else if(selectedBlock == 6){
 			spawnFly.x = x;
 			spawnFly.y = y;
 		}/* else if(selectedBlock == 5){
@@ -198,7 +209,7 @@ function onTouchStart(x, y , id){
 			var newX = round(x/100) * 100;
 			var newY = round(y/100) * 100;
 			if(!lilyat(newX, newY)){
-				insertBack(lilypads, {x:newX, y:newY, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2})
+				insertBack(lilypads, {x:newX, y:newY, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2, mobile:selectedBlock == 3, tp:selectedBlock == 5})
 			}
 		}
 	}
@@ -228,8 +239,14 @@ function epicLilyPads(lily){
 //	fillPolygon([lily.x - 10, lily.y - 50, lily.x + 10, lily.y - 50, lily.x, lily.y], bgColor)
 	if(lily.fire){
 		drawImage(pixelfirelily, lily.x -50, lily.y -50, 100, 100)
-	}else if(!lily.fire){
-		drawImage(pixellily, lily.x -50, lily.y - 50, 100, 100)	
+	}else if(lily.mobile){
+		drawImage(pixelmovinglily, lily.x - 50, lily.y - 50, 100, 100)
+	}else if(!lily.solid){
+		drawImage(pixelghostlily, lily.x - 50, lily.y - 50, 100, 100)
+	}else if(lily.tp){
+		drawImage(pixeltplily, lily.x - 50, lily.y - 50, 100, 100)
+	}else if(!lily.fire && !lily.mobile && !lily.tp){
+		drawImage(pixellily, lily.x - 50, lily.y - 50, 100, 100)	
 	}
 }
 
@@ -433,18 +450,11 @@ function gameTick() {
 				drawImage(pixelfirelily, 325, 1125, 100, 100)
 				//fire lily
 			fillRectangle(500, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillCircle(575, 1175, 50, makeColor( .7, 0, .7))
-				// moving lily
-				fillPolygon([565, 1125, 585, 1125, 575, 1175], makeColor(1, 1, 1))
-				
+				drawImage(pixelmovinglily, 525, 1125, 100, 100)
 			fillRectangle(700, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillCircle(775, 1175, 50, makeColor(.7, .7, .9))
-				//ghost lily
-				fillPolygon([765, 1125, 785, 1125, 775, 1175], makeColor(1, 1, 1))
+				drawImage(pixelghostlily, 725, 1125, 100, 100)
 			fillRectangle(900, 1100, 150, 150, makeColor(1, 1, 1), 30)
-				fillCircle(975, 1175, 50, makeColor(.9, .9, 0))
-				
-				fillPolygon([965, 1125, 985, 1125, 975, 1175], makeColor(1, 1, 1))
+				drawImage(pixeltplily, 925, 1125, 100, 100)
 			fillRectangle(1100, 1100, 150, 150, makeColor(1, 1, 1), 30)
 			
 					drawImage(pixelfly, bugX - 50, bugY - 60, 100, 100)
