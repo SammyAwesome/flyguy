@@ -14,8 +14,8 @@ var pixelfrog = loadImage("pixelfrog.png")
 var pixelselected = loadImage("pixelselected.png")
 var pixelfirelily = loadImage("firelily.png")
 var pixelwater = loadImage("pixelwater.png")
-var watermovex = 4;
-var watermovey = 1;
+var watermovex = 2;
+var watermovey = .5;
 var pixelmovinglily = loadImage("MOBILELILY.png")
 var pixeltplily = loadImage("pixeltplily.png")
 var pixelghostlily = loadImage("ghost.png")
@@ -62,7 +62,14 @@ function onSetup() {
 	
 	spawnFly = {x:200, y:200}
 	xx = 200;
-	waves = [{x:100, y:100},{x:200, y:200}]
+	//waves = [{x:-200, y:100},{x:0, y:200}, {x:200, y:300}, {x:400, y:400}, {x:600, y:500}, {x:800, y:600}, {x:1000, y:700},{x:1200, y:800}, {x:1400, y:900}, {x:1600, y:1000}, {x:1800, y:1100}]
+	waves = makeArray(0)
+	for(var i = 0; i < 11; i++){
+		//insertBack(waves, {x:i *200, y:i *50})
+		for(var j = 0; j < 10; j++){
+			insertBack(waves, {x:i *200, y:150 * j})
+		}
+	}
 	yy = 200;
 	mode = HOME;
 	moving = 0;
@@ -384,10 +391,21 @@ function editMode() {
 }
 function gameTick() {
 	if(mode == PLAY){
+		
 		for(i = 0; i < waves.length; i++){
-			drawImage(pixelwater, waves[i].x, waves[i].y, 120, 30)
-			waves[i].x = waves[i].x + watermovex
-			waves[i].y = waves[i].y + watermovey
+	
+			
+			if(waves[i].x > 2000){
+				waves[i].x = -200
+		
+			}else if(waves[i].y > screenHeight){
+		
+					waves[i].y = -150
+			}else {
+				drawImage(pixelwater, waves[i].x, waves[i].y, 120, 30)
+				waves[i].y = waves[i].y + watermovey
+				waves[i].x = waves[i].x + watermovex
+			}
 		}
 	}
 	
