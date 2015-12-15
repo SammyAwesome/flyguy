@@ -59,7 +59,7 @@ var waves;
 
 // When setup happens...
 function onSetup() {
-	
+	console.log(screenHeight)
 	spawnFly = {x:200, y:200}
 	xx = 200;
 	//waves = [{x:-200, y:100},{x:0, y:200}, {x:200, y:300}, {x:400, y:400}, {x:600, y:500}, {x:800, y:600}, {x:1000, y:700},{x:1200, y:800}, {x:1400, y:900}, {x:1600, y:1000}, {x:1800, y:1100}]
@@ -398,7 +398,7 @@ function gameTick() {
 			if(waves[i].x > 2000){
 				waves[i].x = -200
 		
-			}else if(waves[i].y > screenHeight){
+			}else if(waves[i].y > screenHeight + 70){
 		
 					waves[i].y = -150
 			}else {
