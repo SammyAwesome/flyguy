@@ -380,7 +380,7 @@ function frogMove(x, y) {
 function editMode() {
 	
 	if(mode == EDIT){
-		bgColor = makeColor(.2, .2, .2)
+		bgColor = makeColor(.4, .4, .4)
 		fx = spawnFly.x
 		fy = spawnFly.y
 		flystate = 1
