@@ -27,6 +27,7 @@ var pixelghostlily = loadImage("ghost.png")
 //2 = chef, 3 = army, 4 = scientist, 5 = football, 6 = fireman, 7 = superman, 8 = SPY
 // TODO: DECLARE your variables here
 var lastKeyCode;
+var currentScreen;
 var xx;
 var mode;
 var yy;
@@ -46,12 +47,11 @@ var SCORE;
 var LOSE;
 var bgColor;
 var selectedBlock;
-var lilypads;
 var names;
 var colors;
 var spawnFly;
 var waves;
-
+var screens;
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -90,10 +90,9 @@ function onSetup() {
 	flystate = 1;
 	selectedBlock = 1;
 	colors = [makeColor(0, .6, 0), makeColor(.9, .5, 0), makeColor( .7, 0, .7), makeColor(.7, .7, .9), makeColor(.9, .9, 0), makeColor(0, 0, 0)] 
-	lilypads = makeArray(0);
 	names = ["Regular Lilypad", "Fire Lilypad", "Mobile Lilypad", "Ghost Lilypad", "Teleportation Lilypad", "Fly Spawnpoint", "Frog", "Revise Mode", "Delete Mode"]
-	
-	
+	screens = [{x:0,y:0,lily:[]}]
+	currentScreen = 0;
 }
 
 
@@ -103,12 +102,12 @@ function onKeyStart(key) {
 	
     lastKeyCode = key;
 	if(key == 67){
-		localStorage.lilypads = JSON.stringify(lilypads)
+		localStorage.lilypads = JSON.stringify(screens[currentScreen].lily)
 		console.log(localStorage.lilypads)
 	}
 	if(key == 86){
 		console.log(localStorage.lilypads)
-		lilypads = JSON.parse(localStorage.lilypads)
+		screens[currentScreen].lily = JSON.parse(localStorage.lilypads)
 	}
 	if(key == 32 && mode == PLAY || key == 32 && mode == EDIT){
 		mode = HOME
@@ -172,8 +171,8 @@ function processKEY(key){
 		
 		var collidedwith = undefined;
 		
-		for(var i = 0; i < lilypads.length; i += 1){
-			var lp = lilypads[i];
+		for(var i = 0; i < screens[currentScreen].lily.length; i += 1){
+			var lp = screens[currentScreen].lily[i];
 			if (!nocollision(lp, newx, newy)){
 				collidedwith = lp;
 			}
@@ -196,9 +195,9 @@ function onTouchStart(x, y , id){
 
 	if(mode == EDIT){
 		if(selectedBlock == 9){
-			for(i = 0; i < lilypads.length; i++){
-				if(round(x/100) * 100 == lilypads[i].x && round(y/100) * 100 == lilypads[i].y){
-					removeAt(lilypads, i)
+			for(i = 0; i < screens[currentScreen].lily.length; i++){
+				if(round(x/100) * 100 == screens[currentScreen].lily[i].x && round(y/100) * 100 == screens[currentScreen].lily[i].y){
+					removeAt(screens[currentScreen].lily, i)
 				
 				}
 			}
@@ -216,14 +215,14 @@ function onTouchStart(x, y , id){
 			var newX = round(x/100) * 100;
 			var newY = round(y/100) * 100;
 			if(!lilyat(newX, newY)){
-				insertBack(lilypads, {x:newX, y:newY, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2, mobile:selectedBlock == 3, tp:selectedBlock == 5})
+				insertBack(screens[currentScreen].lily, {x:newX, y:newY, color:colors[selectedBlock - 1], solid:selectedBlock != 4, fire:selectedBlock == 2, mobile:selectedBlock == 3, tp:selectedBlock == 5})
 			}
 		}
 	}
 }
 function lilyat(x, y){
-	for(i = 0; i < lilypads.length; i++){
-		if(x == lilypads[i].x && y == lilypads[i].y){
+	for(i = 0; i < screens[currentScreen].lily.length; i++){
+		if(x == screens[currentScreen].lily[i].x && y == screens[currentScreen].lily[i].y){
 			return true
 		}
 	} return false
@@ -425,8 +424,8 @@ function gameTick() {
     // Some sample drawing 
 	
 	
-	for(var i = 0; i < lilypads.length; i += 1) {
-		var lp = lilypads[i];
+	for(var i = 0; i < screens[currentScreen].lily.length; i += 1) {
+		var lp = screens[currentScreen].lily[i];
 		epicLilyPads(lp)
 
 	}
@@ -454,7 +453,7 @@ function gameTick() {
 
   
 			if(mode == EDIT){
-				fillText("lilypad count:" + lilypads.length, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
+				fillText("lilypad count:" + screens[currentScreen].lily.length, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
 				
 				bugY = 1190
 				bugX = 1175
