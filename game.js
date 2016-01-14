@@ -125,9 +125,42 @@ function onKeyStart(key) {
 	if(key > 48 && key < 59){
 		selectedBlock = key - 48
 	}
-
+	if(mode == EDIT && key == 87){
+		var s = screens[currentScreen]
+		var i = screenChecker(s.x, s.y + 1)
+		currentScreen = i
+		
+	}
+	if(mode == EDIT && key == 83){
+		var s = screens[currentScreen]
+		var i = screenChecker(s.x, s.y - 1)
+		currentScreen = i
+		
+	}
+	if(mode == EDIT && key == 65){
+		var s = screens[currentScreen]
+		var i = screenChecker(s.x - 1, s.y)
+		currentScreen = i
+		
+	}
+	if(mode == EDIT && key == 68){
+		var s = screens[currentScreen]
+		var i = screenChecker(s.x + 1, s.y)
+		currentScreen = i
+		
+	}
 	
 }
+function screenChecker(x, y){
+	for(var i = 0; i < screens.length; i++){
+		if(screens[i].x == x && screens[i].y == y){
+			return i
+		}
+	}
+	insertBack(screens, {x:x, y:y, lily:[]})
+	return screens.length - 1
+}
+
 function onKeyEnd(key){
 	if(currentKEY == key){
 		currentKEY = undefined
@@ -153,8 +186,13 @@ function processKEY(key){
 	}*/
 	
 		if(key == 65){
+			if(!newx <= 0){
 			newx = newx - flyspeed;
 			flystate = 1;
+			}else{
+				currentScreen = screenChecker(screens[currentScreen].x - 1, screens[currentScreen].y)
+				newx = screenWidth
+			}
 		}
 		if(key == 68){
 			newx = newx + flyspeed;
