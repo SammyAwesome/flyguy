@@ -195,6 +195,7 @@ function processKEY(key){
 			}
 		}
 		if(key == 68){
+			filltext("newx = " + newx, 100, 100)
 			if(!newx >= screenWidth){
 			newx = newx + flyspeed;
 			flystate = 2;
