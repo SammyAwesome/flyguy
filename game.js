@@ -195,7 +195,7 @@ function processKEY(key){
 			}
 		}
 		if(key == 68){
-			filltext("newx = " + newx, 100, 100, makeColor(1, 1, 1, 1.0), "300px Arial", "center", "middle")
+			fillText("newx =" + newx, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
 			if(!newx >= screenWidth){
 			newx = newx + flyspeed;
 			flystate = 2;
