@@ -199,7 +199,7 @@ function processKEY(key){
 			newx = newx + flyspeed;
 			flystate = 2;
 			}else{
-				currentScreen = screenChecker(screens[currentScreen].x - 1, screens[currentScreen].y)
+				currentScreen = screenChecker(screens[currentScreen].x + 1, screens[currentScreen].y)
 				newx = 0
 			}
 		}
