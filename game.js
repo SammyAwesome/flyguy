@@ -204,12 +204,22 @@ function processKEY(key){
 			}
 		}
 		if(key == 87){
+			if(newy > 0){
 			newy = newy - flyspeed;
 			flystate = 4;
+			}else{
+				currentScreen = screenChecker(screens[currentScreen].x, screens[currentScreen].y + 1)
+				newy = screenHeight	
+			}
 		}
 		if(key == 83){
+			if(newy < screenHeight){
 			newy = newy + flyspeed;
 			flystate = 3;
+			}else{
+				currentScreen = screenChecker(screens[currentScreen].x, screens[currentScreen].y - 1)
+				newy = 0	
+			}
 		}
 		
 		var collidedwith = undefined;
