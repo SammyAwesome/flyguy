@@ -186,7 +186,7 @@ function processKEY(key){
 	}*/
 	
 		if(key == 65){
-			if(!newx <= 0){
+			if(newx > 0){
 			newx = newx - flyspeed;
 			flystate = 1;
 			}else{
@@ -195,7 +195,7 @@ function processKEY(key){
 			}
 		}
 		if(key == 68){
-			if(newx < 1900){
+			if(newx < screenWidth){
 				newx = newx + flyspeed;
 				flystate = 2;
 			}else{
