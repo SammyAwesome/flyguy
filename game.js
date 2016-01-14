@@ -195,8 +195,13 @@ function processKEY(key){
 			}
 		}
 		if(key == 68){
+			if(!newx >= screenWidth){
 			newx = newx + flyspeed;
 			flystate = 2;
+			}else{
+				currentScreen = screenChecker(screens[currentScreen].x - 1, screens[currentScreen].y)
+				newx = 0
+			}
 		}
 		if(key == 87){
 			newy = newy - flyspeed;
