@@ -195,7 +195,6 @@ function processKEY(key){
 			}
 		}
 		if(key == 68){
-			fillText("newx =" + newx, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
 			if(!newx >= screenWidth){
 			newx = newx + flyspeed;
 			flystate = 2;
@@ -312,6 +311,8 @@ function bugDude(bugX, bugY) {
 		angle = 0
 	}
 	drawTransformedImage(pixelfly, bugX, bugY, angle * 3.14159, .25, .25)
+				fillText("newx =" + newx, screenWidth - 200, screenHeight - 300, makeColor(1, 1, 1, 1.0), "bold 30px Comic Sans MS",  "center", "middle");
+
 	
 /*	
 	if(flystate == 1 && mode == PLAY){
